@@ -1,0 +1,144 @@
+﻿id_sujet;thesis_title;student_faculty;tags
+1;Développement d’une application mobile d’aide à la navigation basée sur un algorithme de la recherche opérationnelle pour la recherche du plus court chemin dans le centre-ville de Goma;Genie Informatique;GI,Mobile-Dev,Optimisation,Algorithme,Transport,Graphe
+2;Système Intelligent de Télésurveillance Médicale combinant IA, IoT et Blockchain;Genie Informatique;GI,IA,IoT,Blockchain,Santé,Sécurité
+3;Conception et Développement d'une Application Mobile/Web pour l'Optimisation des Patrouilles de Sécurité Urbaine à Goma via l'Apprentissage par Renforcement et la Blockchain.;Genie Informatique;GI,Mobile-Dev,Web-Dev,Sécurité,Optimisation,Blockchain,IA
+4;SOLUTIONS DE SECURITE POUR LES  SYSTEMES DOMOTIQUE;Genie Informatique;GI,Domotique,Sécurité,IoT,Réseaux
+5;Conception architecturale d’un système intelligent pour l’assistance au diagnostic des maladies tropicales à partir d’images médicales;Genie Informatique;GI,IA,Vision-Ordinateur,Santé,Diagnostic
+6;Conception et réalisation d'un système de facturation automatique utilisant de l'intelligence Artificille.;Genie Informatique;GI,IA,Gestion,Finance,Web-Dev
+7;Optimisation du contrôle des feux de circulation en vue d’améliorer le trafic routier urbain;Genie Informatique;GI,Optimisation,Transport,IA,Urbain
+8;SYSTEME DE SUIVI DE L'EVOLUTION DES TRAVAUX DE RECHERCHE AU SEIN D'UNE UNIVERSITE. CAS DE L'ULPGL;Genie Informatique;GI,Web-Dev,Gestion,Base-Données,Éducation
+9;DEVELOPPEMENT D'UN MODELE DE PREDICTION DE TENDANCE D'ACHAT DES CLIENTS D'UNE PLATEFORME E-COMMERCE (CAS D'UN ALGORITHME ID-3);Genie Informatique;GI,Data-Science,IA,Commerce,Optimisation
+10;CONCEPTION ET IMPLÉMENTATION D’UN SYSTÈME D’ALARME BASÉ SUR LE WEBSERVICE POUR LA LUTTE CONTRE LES VOLS ET LA CRIMINALITE DANS UNE VILLE : CAS DE LA VILLE DE GOMA;Genie Informatique;GI,Web-Dev,Sécurité,Réseaux,Urbain
+11;Réalisation d'un système de géolocalisation pour le touriste à Goma.;Genie Informatique;GI,Mobile-Dev,Géolocalisation,Tourisme
+12;Etude et mise au point sur le traitement quantique de l'information en mode Cloud appliquée à la cyber sécurité.;Genie Informatique;GI,Cloud,Sécurité,Quantique
+13;Conception d'un systeme électronique permettant la géolocalisation d'un bus scolaire.;Genie Informatique;GI,IoT,Géolocalisation,Éducation,Transport
+14;Modélisation et commande d'un pendule inversé par un réseau des neurones artificiels.;Genie Informatique;GI,IA,Modélisation,Contrôle,Robotique
+15;Conception et mise en place d’une plateforme de salle virtuelle de formation basée sur le WebRTC;Genie Informatique;GI,Web-Dev,Éducation,Réseaux
+16;CONCEPTION, IMPLEMENTATION D’UN GENERATEUR INTELLIGENT DES NOTES MUSICALES A PARTIR DES MUSIQUES CLASSIQUES;Genie Informatique;GI,IA,Multimédia,Création
+17;SYSTÈME INTELLIGENT POUR LA TELESURVEILLANCE ET LA PRISE EN CHARGE DES MALADES EN CAS D’URGENCE;Genie Informatique;GI,IoT,Santé,Sécurité,Alerte
+18;CONCEPTION ET REALISATION D'UN SYSTEME DE CONTROLE DE BIBLIOTHEQUE BASE SUR LA TECHNOLOGIE RFID;Genie Informatique;GI,IoT,Gestion,Éducation,RFID
+19;CONCEPTION D’UN SYSTÈME INTELLIGENT DE SURVEILLANCE ET DE PREDICTION DES RISQUES DE CATASTROPHES DANS UNE ZONZ VOLCANIQUE : cas de Goma;Genie Informatique;GI,IA,Prédiction,Géolocalisation,Environnement
+20;CONCEPTION ET REALISATION D’UNE APPLICATION MOBILE PERMETTANT LA COLLECTE DES DONNEES;Genie Informatique;GI,Mobile-Dev,Data-Science,Gestion
+21;APPROCHE HYBRIDE POUR AUGMENTER LA SECURITE DES PERIPHERIQUES LOT : cas d’un réseau des capteurs à la Bralima/Goma;Genie Informatique;GI,IoT,Sécurité,Réseaux
+22;SYSTÈME DE SUIVI TEMPS REEL DE L’ITINERAIRE DES MARCHANDISES ET ENGINS MOBILES DE TRANSPORT BASÉ SUR LA GEOLOCALISATION GPS;Genie Informatique;GI,Géolocalisation,Transport,Gestion,Logistique
+23;Conception et Déploiement d'un portail web sécurisé basé sur la technologie WiMAX pour l'interconection des sites distans: cas de la Direction Provinciale des Impots/DPI;Genie Informatique;GI,Web-Dev,Réseaux,Sécurité,Administration
+24;CONCEPTION ET REALISATION D'UN ASSISTANT VIRTUEL CONTROLABLE PAR VOIX;Genie Informatique;GI,IA,NLP,Chatbot,Mobile-Dev
+25;CONCEPTION ET REALISATION D'UN SYSTEME DE SECURITE RESIDENTIELLE;Genie Informatique;GI,Domotique,Sécurité,IoT
+26;EXTRACTION DES CONNAISSANCES DANS LES RESEAUX SOCIAUX PAR DES TECHNIQUES DE DATA MINING;Genie Informatique;GI,Data-Science,Data-Mining,Réseaux-Sociaux
+27;CONCEPTION ET REALISATION D’UN SYSTEME DE DISTRIBUTION AUTOMATIQUE DE BOISSONS;Genie Informatique;GI,Automatisme,IoT,Électronique,Commerce
+28;"Modélisation de la crédibilité d’un client dans une coopérative d’épargne et
+des crédits avec le Data Mining";Genie Informatique;GI,Data-Science,Finance,Data-Mining,IA
+29;CONCEPTION ET REALISATION D’UN SYSTEME EMBARQUE POUR UNE MAISON INTELLIGENTE « SMART HOUSE »;Genie Informatique;GI,Embarqué,Domotique,IoT
+30;ETUDE ET CONCEPTION D’UN SYSTEME DE POSITIONNEMENT INDOOR 2D HYBRIDE BASE SUR LES TECHNOLOGIES RFID ET ULTRASON;Genie Informatique;GI,IoT,Géolocalisation,RFID,Optimisation
+31;ETUDE DE L'EQUILIBRE DE CHARGE DANS LES SYSTEMES DISTRIBUES:COMPARAISON D'ALGORITHME DANS UN CLUSTER SUR RESEAU IP;Genie Informatique;GI,Réseaux,Optimisation,Cloud
+32;SYSTEME DE CONTROLE D'ACCES A UN PARKING SOUTERAIN;Genie Informatique;GI,Sécurité,Automatisme,Gestion,Vision-Ordinateur
+33;"CONCEPTION ET REALISATION D’UN
+SYSTEME INTELLIGENT D’EXTINCTION
+DES INCENDIES";Genie Informatique;GI,IoT,Sécurité,Automatisme,Alerte
+34;"Conception et Déploiement d’un portail web sécurisé basé sur la technologie WiMAX pour l’interconnexion des  sites distants : 
+Cas de la Direction Provinciale des Impôts/DPI";Genie Informatique;GI,Web-Dev,Réseaux,Sécurité,Administration
+35;SYSTEME DE RECONNAISSANCE FACIALE;Genie Informatique;GI,IA,Vision-Ordinateur,Sécurité
+36;"EXTRACTION DES CONNAISSANCES 
+DANS LES RESEAUX SOCIAUX PAR DES TECHNIQUES DE DATA MINING : 
+UNE NOUVELLE APPROCHE";Genie Informatique;GI,Data-Science,Data-Mining,IA,Réseaux-Sociaux
+37;CONCEPTION ET IMPLÉMENTATION D'UN SYSTÈME DE CONTRÔLE ET SURVEILLANCE A DISTANCE D'UN INCUBATEUR NÉONATAL;Genie Informatique;GI,IoT,Contrôle,Santé,Embarqué
+38;Étude et réalisation d'un disjoncteur différentiel électronique;Genie Electrique;GE,Électronique,Sécurité,Protection
+39;"MODELISATION ET DIMENSIONEMENT 
+D’UN MINI-GRID ALIMENTE PAR UNE
+ MICROCENTRALE HYDROELECTRIQUE 
+ A NYABIONDO";Genie Electrique;GE,Smart-Grid,Hydro,Optimisation,Énergie,Modélisation
+40;"DÉVELOPPEMENT D'UN SYSTÈME DE PROTECTION INTELLIGENTE 
+CONTRE LES COURTS-CIRCUITS DANS LES TABLEAUX ÉLECTRIQUES 
+POUR LES RÉSEAUX ÉLECTRIQUES DE LA VILLE DE GOMA";Genie Electrique;GE,Électronique,Sécurité,Protection,Réseaux
+41;Etude d'un système d'optimisation de la qualité de l'énergie électrique fournie à une charge sensible;Genie Electrique;GE,Énergie,Optimisation,Contrôle
+42;Etude et conception d’un système de supervision et d’acquisition des données SCADA pour un contrôle temp réel d’un réseau électrique .;Genie Electrique;GE,SCADA,Contrôle,Réseaux,Automatisme
+43;Étude et dimensionnement d'un réseau solaire photovoltaique pour l'alimentation en électricité du quartier Panzi à bukavu;Genie Electrique;GE,Solaire,Énergie,Dimensionnement,Réseaux
+44;TECHNOLOGIES DES  RESEAUX INTELLIGENTS ET  LEUR IMPACT SUR  LA DISTRIBUTION ET LA CONSOMMATION D’ENERGIE.;Genie Electrique;GE,Smart-Grid,Énergie,Réseaux,IoT
+45;Optimisation de l'Intégration des énergies renouvelable pour la réduction des pertes actives dans un réseau électrique de distribution cas du réseau de distribution MT de la SNEL-GOMA;Genie Electrique;GE,Énergie,Optimisation,Réseaux,Environnement
+46;Mise en place d'un compteur d'eau intelligent supplémentaire pour surveiller la consommation dans des foyers partageant un compteur principal, étude de cas des abonnés de la REGIDESO-GOMA.;Genie Electrique;GE,IoT,Smart-Grid,Électronique,Urbain
+47;CONCEPTION ET RÉALISATION D’UN CONTRÔLEUR FLOU POUR LA RÉGULATION DES CONDITIONS CLIMATIQUES DES PLANTES DANS UNE SERRE AGRICOLE < CAS DU FRUIT DE LA PASSION>;Genie Electrique;GE,Automatisme,Contrôle,IA,Agriculture
+48;Conception  et réalisation d'un système de détection et localisation  de vol d'énergie électrique basé sur l'IOT/Cas de Virunga SARL à Rutcthuru;Genie Electrique;GE,IoT,Sécurité,Énergie,Réseaux
+49;Conception et réalisation d'un système de reconnaissance des cris d'animaux basé sur CNN pour la surveillance de la biodiversité et la détection d'extinction des espèces animales.;Genie Electrique;GE,IA,Vision-Ordinateur,Environnement,Faune
+50;Conception et réalisation d'un chargeur sans fil pour automobile électrique: cas d'un parking avec toiture solaire.;Genie Electrique;GE,Énergie,Solaire,Véhicule-Électrique,Électronique
+51;SYSTÈME DE DÉTECTION DE RISQUES D’INCENDIE DANS UN ESPACE CULINAIRE D’UN MÉNAGE : APPROCHE DE VISION PAR ORDINATEUR;Genie Electrique;GE,Vision-Ordinateur,Sécurité,IoT
+52;Conception et réalisation d'une commande électronique pour moteur à réluctance variable;Genie Electrique;GE,Électronique,Contrôle,Moteur
+53;Conception et réalisation d'un Contrôleur de suivi solaire pour module photovoltaïque;Genie Electrique;GE,Solaire,Contrôle,Électronique
+54;Conception d’un système de séchage des matériaux en gypse avec asservissement de température. Cas des plaques des plâtres.;Genie Electrique;GE,Automatisme,Contrôle,Industrie
+55;Étude et conception d'une canne intelligente pour personnes non-voyantes [Malvoyantes];Genie Electrique;GE,Électronique,IoT,Santé,Aide
+56;APPROCHE DE CONCEPTION D'UN STIMULATEUR CARDIAQUE (PACEMAKER) A PARTIR D'UN MICROCONTROLLEUR;Genie Electrique;GE,Électronique,Santé,Embarqué
+57;"Conception d’un onduleur intelligent des systèmes photovoltaïques, connecté au réseau de distribution 
+(Grid tie solar Inverter)";Genie Electrique;GE,Solaire,Smart-Grid,Électronique,Réseaux
+58;CONTRÔLE PAR LA LOGIQUE FLOUE D’UN SYSTÈME DE STOCKAGE D’ENERGIE HYBRIDE (BATTERIE/SUPERCONDENSATEUR) POUR VÉHICULE ÉLECTRIQUE;Genie Electrique;GE,Contrôle,IA,Stockage,Véhicule-Électrique
+59;Etude et mise en place d’un système de détection d’intrusion,cas du réseau informatique  de l'ULPGL/Goma;Genie Electrique;GE,Sécurité,Réseaux,Audit
+60;AMELIORATION DE LA COMMANDE DIRECTE DU COUPLE D’UN MOTEUR ASYNCHRONE PAR LA TECHNIQUE DU NEUROFLOU (ANFIS) : Cas du Véhicule électrique;Genie Electrique;GE,Automatisme,IA,Contrôle,Moteur,Véhicule-Électrique
+61;Dimensionnement optimal des équipements d’une centrale solaire isolée avec stockage par la méthode LPSP (Loss of Power Supply Probability).;Genie Electrique;GE,Solaire,Optimisation,Dimensionnement,Stockage
+62;Conception et réalisation d'un vélo électrique intelligent pour paraplégiques;Genie Electrique;GE,Électronique,Mobilité,Santé,Embarqué
+63;Elaboration d'un outil d aide au diagnostic du cancer base sur le réseau de neurones artificiel;Genie Electrique;GE,IA,Diagnostic,Santé,Électronique
+64;ETUDE ET RÉALISATION  D'UN VARIATEUR  DE VITESSE D'UN MOTEUR ASYNCHRONE  A BASE DE MICROCONTROLEUR;Genie Electrique;GE,Électronique,Contrôle,Moteur
+65;MESURE EN CONTINU ET RÉGULATION DE LA TENEUR EN CHLORE POUR UNE MEILLEURE DÉSINFECTION DE L'EAU : CAS DE LA REGIDESO NORD-KIVU;Genie Electrique;GE,Contrôle,Automatisme,Eau,Environnement
+66;Optimisation des méthodes de conceptions expérimentales  pour améliorer les propriétés mécaniques et de durabilités du Béton fait à base d'agrégats recyclés.;Genie Civil;GC,Matériaux,Recyclage,Durabilité,Optimisation
+67;Étude du degré de fiabilité des calculs manuels des structures métalliques. Application sur un hangar à l'hôpital général de la référence de Bunia.;Genie Civil;GC,Structure,Fiabilité,Métallique
+68;Etude d'un Eco-béton à  base de terre stabilisé  au ciment : Application au sol de KATANA(SUD-KIVU);Genie Civil;GC,Matériaux,Écologie,Géotechnique
+69;Etude en vue du dimensionnement d’un tunnel immergé reliant la Province du Nord-Kivu à celle du Sud Kivu via la localité de Nzulo;Genie Civil;GC,Structure,Hydraulique,Tunnel,Dimensionnement
+70;Drainage des eaux pluviales du quartier MABANGA-SUD;Genie Civil;GC,Hydraulique,Drainage,Urbain
+71;Conception, Études et réalisation d'un chemin de fer reliant la ville de Goma du territoire de Walikale : 235km;Genie Civil;GC,Transport,Route,Conception
+72;INFLUENCE DE LA PERFORMANCE DES JOINTS PARASSISMIQUES ET DE CONTREVENTEMENT SUR UNE STRUCTURE DE FORME REGULIERE DANS LA VILLE DE GOMA : APPLICATION A UNE STRUCTURE R+3 SERVANT DE PRISON;Genie Civil;GC,Structure,Parasismique,Séisme,Performance
+73;Évaluation de la performance mécanique des briques en terre stabilisée avec cendre de bagasse de ceux stabilisées avec du ciment .;Genie Civil;GC,Matériaux,Performance,Écologie
+74;Etude de la vulnerabilite sismique des batiments residentiels a Goma et propositions de solutions techniques de renforcement adaptées;Genie Civil;GC,Structure,Sismique,Renforcement
+75;ÉTUDE DU COMPORTEMENT DYNAMIQUE D’UN BÂTIMENT SUR UN SITE À RISQUE VOLCANIQUE ET SISMIQUES: APPLICATION À LA VILLE DE GOMA;Genie Civil;GC,Structure,Sismique,Volcanique,Modélisation
+76;"Modélisation par éléments finis de la
+liquéfaction des sols sous chargements
+sismiques : application à la ville de Bukavu";Genie Civil;GC,Géotechnique,Sismique,Modélisation,Sol
+77;"Analyse sismique comparative des structures en
+portique et en structures en voiles en béton armé : application à un bâtiment R+7 à usage administratif.";Genie Civil;GC,Structure,Sismique,Analyse,Béton-Armé
+78;Étude du comportement sismique des bâtiments en béton armé à Goma, modélisation et optimisation des contreventements. Application sur un bâtiment R+7 à usage administratif;Genie Civil;GC,Structure,Sismique,Optimisation,Modélisation
+79;Étude du comportement à long terme des sols sous charges permanentes : application à la stabilité des fondations des bâtiments;Genie Civil;GC,Géotechnique,Fondation,Stabilité
+80;"DRAINAGE DES EAUX PLUVIALES 
+STAGNANTS SUR LES VOIES 
+PUBLIQUES EN VILLE DE GOMA « CAS 
+DU TRONCON VISION 20-20 KIHISI »";Genie Civil;GC,Hydraulique,Drainage,Urbain
+81;"Amélioration parasismique des structures en zone tropicale par l’utilisation des matériaux locaux et des fibres naturelles : Cas d’étude dans une région sismique d’Afrique centrale; précisément en GOMA";Genie Civil;GC,Matériaux,Parasismique,Écologie,Structure
+82;Optimisation du choix du type de fondation pour la stabilité d’un pont mixte acier-béton sur sol instable : Cas du pont Makelele, territoire de Kalehe ;Genie Civil;GC,Structure,Pont,Fondation,Optimisation
+83;ETUDES TECHNIQUES D'IMPERMEABILISATION DES BASSINS DE COLLECTE DES EAUX DE RUISSELLEMENT;Genie Civil;GC,Hydraulique,Étanchéité,Eau
+84;ÉVALUATION EXPERIMENTALE DE LA PERFORMANCE DES FONDATIONS SUR PIEUX DANS UN SOL SOUMIS A L’EROSION : CAS DE LA ZONE DE KARHALE A BUKAVU”;Genie Civil;GC,Géotechnique,Fondation,Érosion
+85;ANALYSE COMPARATIVE ET OPTIMISATION DES SOLUTIONS D'AMORTISSEMENT SISMIQUE PASSIVES ET POTENTIELLEMENT ACTIVES POUR LES BATIMENTS DE GRANDE HAUTEUR A GOMA : CAS D'UN BATIMENT R+9 A USAGE COMMERCIAL ;Genie Civil;GC,Structure,Sismique,Optimisation,Amortissement
+86;ÉVALUATION DE LA DURABILITÉ A LONG TERME DE STRUCTURES EN BTC STABILISE SOUMISES AUX CONDITIONS CLIMATIQUES DE LA RÉGION DU NORD-KIVU : FOCUS SUR L’IMPACT DE L’ÉROSION HYDRIQUE ET ÉOLIENNE SUR LA STABILITÉ DU SOL;Genie Civil;GC,Matériaux,Durabilité,Climat,Géotechnique
+87;Étude comparative de construction de route en chaussée souple et en chaussée rigide : cas du tronçon EP Byayi-Kitrenti;Genie Civil;GC,Route,Chaussée,Comparaison
+88;"Conception d'un bâtiment parasismique en béton renforcé de fibres naturelles locales : étude 
+expérimentale et modélisation.";Genie Civil;GC, Structure, Parasismique, Matériaux, Écologie, Modélisation
+89;Analyse statique et dynamique d’un terminal d’aéroport à Goma;Genie Civil;GC,Structure,Analyse,Aéronautique
+90;Comparaison de la performance des granulats recyclés et naturels dans la fabrication de béton non armé;Genie Civil;GC,Matériaux,Recyclage,Performance,Béton
+91;Analyse de l'impact des techniques de constructions parasismiques sur la  résilience des batiments résidentiels en zone sismique de l'Est de la RDC;Genie Civil;GC,Structure,Parasismique,Résilience
+92;Conception et dimensionnement d’un système intégré de collecte, de traitement et de valorisation des eaux pluviales et usées domestiques en milieu urbain à forte vulnérabilité : cas de la ville de Goma.;Genie Civil;GC,Hydraulique,Environnement,Traitement,Urbain
+93;Étude comparative des propriétés mécaniques du béton fait à base du ciment Cimerwa et Prime cement ;Genie Civil;GC,Géotechnique,Structure,Modélisation,Éléments-Finis
+94;"ETUDE GEOTECHNIQUE DU SOL EN VUE DE
+SON UTILISATION COMME MATERIAU DE
+CONSTRUCTION ROUTIÈRE : APLICATION AUX SOLS
+DE Masisi";Genie Civil;GC,Géotechnique,Matériaux,Route
+95;Analyse comparative des performances des fosses septiques biofil et classique.;Genie Civil;GC,Hydraulique,Environnement,Assainissement
+96;Modélisation et analyse d'un nouveau réseau d'approvisionnement en eau potable : cas du quartier Virunga;Genie Civil;GC,Hydraulique,Réseaux,Modélisation,Eau
+97;Conception d'un système de détection des deepfakes vidéo par apprentissage profond;Genie Informatique;"GI;IA;Deep-Learning;Cybersécurité;Vision;Réseaux-Sociaux"
+98;Optimisation des architectures Microservices et déploiement serverless sur AWS/Azure;Genie Informatique;"GI;Cloud;DevOps;Microservices;Architecture;Kubernetes;Web-Dev"
+99;Développement d'une plateforme de traçabilité des transactions foncières via Blockchain;Genie Informatique;"GI;Blockchain;Sécurité;Smart-Contracts;Base-de-données;Téchnologie-Financière"
+100;Implémentation d'un agent conversationnel IA pour le support technique client;Genie Informatique;"GI;NLP;IA;Machine-Learning;Chatbot;Expérience-Utilisateur"
+101;Audit de sécurité des applications web basées sur des frameworks JavaScript modernes;Genie Informatique;"GI;Cybersécurité;Web-Dev;Sécurité-Applicative;Pénétration;JavaScript"
+102;Conception et modélisation d'un Smart Grid pour l'intégration optimisée d'énergies renouvelables;Genie Informatique;"GE;Smart-Grid;Énergie;Renouvelable;Modélisation;Optimisation;Réseaux"
+103;Développement d'un système de surveillance à distance des pannes sur les lignes haute tension via IoT;Genie Electrique;"GE;IoT;Capteurs;Télécommunication;Maintenance-Prédictive;Haute-Tension"
+104;Contrôle adaptatif d'un moteur asynchrone pour l'amélioration de l'efficacité énergétique;Genie Electrique;"GE;Contrôle;Moteur;Efficacité-Énergétique;Systèmes-Embarqués;Automatisme"
+105;Simulation d'un convertisseur multi-niveaux pour les applications photovoltaïques;Genie Electrique;"GE;Photovoltaïque;Convertisseur;Électronique-de-Puissance;Modélisation;Simulation"
+106;Mise en œuvre d'une solution de gestion des batteries (BMS) pour véhicules électriques;Genie Electrique;"GE;Batteries;Véhicule-Électrique;Stockage;Contrôle;Automatisme"
+107;Mise en place d'un système de gestion de contenu électronique (GED) pour une administration;Genie Informatique;"GI;Gestion;Systèmes-d'Information;Base-de-données;Développement"
+108;Étude comparative des méthodologies de développement logiciel (Agile vs Cascade) et proposition d'adaptation;Genie Informatique;"GI;Gestion-de-Projet;Méthodologie;Analyse;Organisation;Agile"
+109;Optimisation des requêtes SQL et refonte de la base de données d'un ancien système d'information;Genie Informatique;"GI;Base-de-données;SQL;Optimisation;Analyse;Refonte-SI"
+110;Étude de faisabilité et conception d'un béton auto-cicatrisant pour la durabilité des structures;Genie Civil;"GC;Matériaux;Béton;Durabilité;Écologie;Structure"
+111;Analyse de la vulnérabilité sismique des ponts à tablier métallique et proposition de renforcement;Genie Civil;"GC;Parasismique;Analyse-Structurelle;Pont;Métallique;Renforcement"
+112;Impact de l'utilisation de matériaux locaux et recyclés sur la performance thermique des bâtiments;Genie Civil;"GC;Écologie;Matériaux;Thermique;Bâtiment;Performance-Énergétique"
+113;Modélisation des écoulements d'eau dans les zones urbaines pour la prévention des inondations;Genie Civil;"GC;Hydraulique;Modélisation;Drainage;Urbanisme;Inondation"
+114;Étude de l'optimisation des coûts des matériaux dans la construction d'un bâtiment R+3;Genie Civil;"GC;Matériaux;Coût;Optimisation;Gestion-de-Projet;Bâtiment"
+115;Dimensionnement et implantation d'un réseau d'assainissement pour un nouveau quartier urbain;Genie Civil;"GC;Hydraulique;Assainissement;Dimensionnement;Urbanisme;Infrastructure"
+116;Analyse de la stabilité et proposition de renforcement d'un mur de soutènement existant;Genie Civil;"GC;Structure;Stabilité;Soutènement;Analyse-Structurelle;Renforcement"
+117;Contrôle qualité et conformité des ouvrages en béton armé sur un chantier routier;Genie Civil;"GC;Contrôle-Qualité;Béton-Armé;Chantier;Audit;Routier"
+118;Diagnostic des défauts sur une machine asynchrone par analyse des vibrations;Genie Electrique;"GE;Machine-Électrique;Diagnostic;Maintenance;Vibration;Analyse"
+119;Amélioration du facteur de puissance d'une installation industrielle par batterie de condensateurs;Genie Electrique;"GE;Efficacité-Énergétique;Puissance;Réseaux;Optimisation;Condensateur"
+120;Installation et configuration d'un système de télémétrie pour le suivi de la consommation électrique;Genie Electrique;"GE;Instrumentation;Télémétrie;Surveillance;Réseaux;Consommation"
+121;Élaboration d'un plan de maintenance préventive pour les transformateurs de puissance d'une sous-station;Genie Electrique;"GE;Maintenance;Transformateur;Gestion-d'Équipement;Énergie;Audit"
