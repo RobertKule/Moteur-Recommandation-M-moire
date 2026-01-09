@@ -1,11 +1,7 @@
-streamlit
-pandas
-scikit-learn
-plotly
-langchain>=0.2
+# requirements.txt
+langchain>=0.1.0
+langchain-community
 langchain-google-genai
 chromadb
-sentence-transformers
-streamlit
 pandas
 python-dotenv
