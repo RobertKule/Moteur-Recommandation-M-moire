@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
+import { Toaster } from 'sonner'
+import { ApiErrorHandler } from '@/components/errors/ApiErrorHandler'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +22,10 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <body className={inter.className}>
         <Providers>
-          {children}
+          <ApiErrorHandler>
+            <Toaster position="top-right" />
+            {children}
+          </ApiErrorHandler>
         </Providers>
       </body>
     </html>
