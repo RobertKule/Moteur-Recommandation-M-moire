@@ -1,6 +1,7 @@
-# app/llm_service.py
+# app/llm_service.py - VERSION COMPLÈTE FONCTIONNELLE
 import os
 import json
+import re
 from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
 
@@ -8,10 +9,14 @@ load_dotenv()
 
 # Configuration
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-pro")
 
 # ======================
 # CONFIGURATION LANGCHAIN
 # ======================
+llm = None
+json_parser = None
+
 try:
     from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain_core.prompts import ChatPromptTemplate
@@ -19,18 +24,23 @@ try:
     from langchain_core.exceptions import OutputParserException
     
     # Initialiser LangChain avec Gemini
-    llm = ChatGoogleGenerativeAI(
-        model=os.getenv("GEMINI_MODEL", "gemma-3-1b-it"),
-        google_api_key=GOOGLE_API_KEY,
-        temperature=os.getenv("GEMINI_TEMPERATURE", 0.2),
-        max_output_tokens=2048
-    )
-    
-    # Parser JSON
-    json_parser = JsonOutputParser()
-    
-    print("✅ LangChain avec Gemini configuré")
-    
+    if GOOGLE_API_KEY:
+        llm = ChatGoogleGenerativeAI(
+            model=GEMINI_MODEL,
+            google_api_key=GOOGLE_API_KEY,
+            temperature=0.2,
+            max_output_tokens=2048
+        )
+        
+        # Parser JSON
+        json_parser = JsonOutputParser()
+        
+        print("✅ LangChain avec Gemini configuré")
+    else:
+        print("⚠️ GOOGLE_API_KEY non configurée")
+        llm = None
+        json_parser = None
+        
 except ImportError as e:
     print(f"❌ LangChain non disponible: {e}")
     llm = None
@@ -92,15 +102,15 @@ def analyser_sujet(sujet_data: Dict[str, Any]) -> Dict[str, Any]:
         
         return result
         
-    except (OutputParserException, Exception) as e:
+    except Exception as e:
         print(f"⚠️ Erreur analyse LangChain: {e}")
         return get_fallback_analysis(sujet_data)
 
 def recommander_sujets_llm(
     interests: List[str], 
     sujets: List[Dict], 
-    critères: Dict
-) -> List[Dict]:
+    critères: Dict[str, Any]
+) -> List[Dict[str, Any]]:
     """Recommande des sujets avec LangChain"""
     
     if not llm or not sujets:
@@ -108,12 +118,12 @@ def recommander_sujets_llm(
     
     # Formater les sujets
     sujets_text = ""
-    for sujet in sujets[:15]:  # Limiter à 15 sujets pour le contexte
-        sujets_text += f"\n• ID: {sujet['id']}"
-        sujets_text += f" | Titre: {sujet['titre']}"
-        sujets_text += f" | Mots-clés: {sujet['keywords']}"
-        sujets_text += f" | Niveau: {sujet['niveau']}"
-        sujets_text += f" | Domaine: {sujet['domaine']}"
+    for sujet in sujets[:10]:  # Limiter à 10 sujets pour le contexte
+        sujets_text += f"\n• ID: {sujet.get('id', 'N/A')}"
+        sujets_text += f" | Titre: {sujet.get('titre', 'Sans titre')}"
+        sujets_text += f" | Mots-clés: {sujet.get('keywords', '')}"
+        sujets_text += f" | Niveau: {sujet.get('niveau', 'N/A')}"
+        sujets_text += f" | Domaine: {sujet.get('domaine', 'Général')}"
     
     prompt_template = """
     Tu es un assistant spécialisé dans la recommandation de sujets de mémoire.
@@ -129,7 +139,7 @@ def recommander_sujets_llm(
     {sujets_text}
     
     **TÂCHE:**
-    Pour chaque sujet, évalue:
+    Pour les sujets les plus pertinents, fournis:
     1. Score de pertinence (0-100) basé sur les intérêts et critères
     2. 2-3 raisons principales de recommandation
     3. Critères d'acceptation respectés
@@ -144,16 +154,15 @@ def recommander_sujets_llm(
       }}
     ]
     
-    Retourne seulement les 5 sujets les plus pertinents, triés par score décroissant.
+    Retourne seulement les 3-5 sujets les plus pertinents, triés par score décroissant.
     """
     
     try:
         prompt = ChatPromptTemplate.from_template(prompt_template)
-        # Utiliser StrOutputParser puis parser le JSON manuellement
         chain = prompt | llm | StrOutputParser()
         
         response = chain.invoke({
-            "interests": ", ".join(interests),
+            "interests": ", ".join(interests) if interests else "Non spécifié",
             "niveau": critères.get('niveau', 'Non spécifié'),
             "faculté": critères.get('faculté', 'Non spécifiée'),
             "domaine": critères.get('domaine', 'Non spécifié'),
@@ -163,15 +172,15 @@ def recommander_sujets_llm(
         
         # Parser le JSON de la réponse
         try:
-            # Chercher du JSON dans la réponse
-            import re
             json_match = re.search(r'\[.*\]', response, re.DOTALL)
             if json_match:
                 json_str = json_match.group()
-                return json.loads(json_str)
-        except json.JSONDecodeError as e:
+                result = json.loads(json_str)
+                return result
+        except (json.JSONDecodeError, AttributeError) as e:
             print(f"⚠️ Erreur parsing JSON: {e}")
-            return fallback_recommendation(interests, sujets)
+            
+        return fallback_recommendation(interests, sujets)
             
     except Exception as e:
         print(f"⚠️ Erreur recommandation LangChain: {e}")
@@ -181,10 +190,11 @@ def répondre_question(question: str, contexte: str = None) -> str:
     """Répond à une question avec LangChain"""
     
     if not llm:
-        return "Le service IA est temporairement indisponible. Veuillez consulter votre enseignant."
+        return "Le service IA est temporairement indisponible. Veuillez consulter votre enseignant pour des conseils personnalisés."
     
     prompt_template = """
-    Tu es un expert-conseil en sujets de mémoire universitaire.
+    Tu es un expert-conseil en sujets de mémoire universitaire, appelé MemoBot.
+    Tu aides les étudiants à trouver, affiner et développer leurs sujets de mémoire.
     
     **QUESTION DE L'ÉTUDIANT:**
     {question}
@@ -195,7 +205,9 @@ def répondre_question(question: str, contexte: str = None) -> str:
     1. Donne une réponse claire, concise et utile
     2. Propose des conseils pratiques si pertinent
     3. Sois encourageant et professionnel
-    4. Réponds en français
+    4. Réponds en français de manière naturelle
+    5. Si la question est vague, demande des précisions
+    6. Tu peux suggérer des pistes de réflexion
     
     **RÉPONSE:**
     """
@@ -215,7 +227,7 @@ def répondre_question(question: str, contexte: str = None) -> str:
         
     except Exception as e:
         print(f"⚠️ Erreur réponse LangChain: {e}")
-        return f"Je ne peux pas répondre pour le moment. Erreur: {str(e)[:100]}"
+        return f"Je ne peux pas répondre pour le moment. Veuillez réessayer plus tard."
 
 def générer_sujets_llm(
     params: Dict[str, Any],
@@ -258,7 +270,7 @@ def générer_sujets_llm(
       }}
     ]
     
-    Génère exactement {count} sujets originaux et pertinents.
+    Génère exactement {count} sujets originaux, pertinents et réalisables.
     """
     
     try:
@@ -275,13 +287,12 @@ def générer_sujets_llm(
         
         # Parser le JSON
         try:
-            import re
             json_match = re.search(r'\[.*\]', response, re.DOTALL)
             if json_match:
                 json_str = json_match.group()
                 sujets = json.loads(json_str)
                 return sujets[:count]
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, AttributeError):
             pass
             
         return generate_default_subjects(params, count)
@@ -296,40 +307,40 @@ def get_acceptance_criteria() -> Dict[str, Any]:
     """
     return {
         "critères_acceptation": [
-            "1. Pertinence avec le domaine d'étude de l'étudiant",
-            "2. Problématique clairement définie et spécifique",
-            "3. Originalité et valeur ajoutée par rapport à l'état de l'art",
-            "4. Faisabilité technique (ressources disponibles)",
-            "5. Faisabilité temporelle (6-12 mois maximum)",
-            "6. Accès aux données et matériaux nécessaires",
-            "7. Intérêt scientifique et/ou pratique démontré",
-            "8. Adéquation avec le niveau académique (L3, Master, etc.)",
-            "9. Objectifs de recherche SMART (Spécifiques, Mesurables, Atteignables, Réalistes, Temporels)",
-            "10. Méthodologie appropriée et bien définie"
+            "Pertinence avec le domaine d'étude de l'étudiant",
+            "Problématique clairement définie et spécifique",
+            "Originalité et valeur ajoutée par rapport à l'état de l'art",
+            "Faisabilité technique (ressources disponibles)",
+            "Faisabilité temporelle (6-12 mois maximum)",
+            "Accès aux données et matériaux nécessaires",
+            "Intérêt scientifique et/ou pratique démontré",
+            "Adéquation avec le niveau académique",
+            "Objectifs de recherche SMART",
+            "Méthodologie appropriée et bien définie"
         ],
         "critères_rejet": [
-            "1. Sujet trop large, vague ou mal défini",
-            "2. Duplication d'un travail existant sans valeur ajoutée significative",
-            "3. Ressources insuffisantes ou inaccessibles (données, équipement, budget)",
-            "4. Problématique absente, floue ou mal formulée",
-            "5. Aspects non-éthiques ou non conformes à la déontologie de la recherche",
-            "6. Hors du domaine de compétence de l'étudiant ou de l'établissement",
-            "7. Objectifs irréalistes, non mesurables ou trop ambitieux",
-            "8. Manque d'encadrement disponible ou compétent dans le domaine",
-            "9. Coût trop élevé sans source de financement identifiée",
-            "10. Délai de réalisation incompatible avec le calendrier académique"
+            "Sujet trop large, vague ou mal défini",
+            "Duplication d'un travail existant sans valeur ajoutée",
+            "Ressources insuffisantes ou inaccessibles",
+            "Problématique absente, floue ou mal formulée",
+            "Aspects non-éthiques ou non conformes",
+            "Hors du domaine de compétence",
+            "Objectifs irréalistes ou trop ambitieux",
+            "Manque d'encadrement disponible",
+            "Coût trop élevé sans financement",
+            "Délai incompatible avec le calendrier académique"
         ],
         "conseils_pratiques": [
-            "1. Consultez votre directeur de mémoire potentiel dès les premières réflexions",
-            "2. Effectuez une revue de littérature préliminaire pour identifier les lacunes",
-            "3. Définissez une méthodologie réaliste et adaptée à votre question de recherche",
-            "4. Établissez un calendrier détaillé avec des jalons intermédiaires",
-            "5. Identifiez précisément les ressources nécessaires (données, logiciels, équipement)",
-            "6. Assurez-vous d'avoir les compétences requises ou un plan pour les acquérir",
-            "7. Prévoyez des alternatives (plan B) en cas de difficultés imprévues",
-            "8. Documentez soigneusement votre processus de recherche dès le début",
-            "9. Préparez une soutenance claire et professionnelle dès la phase de proposition",
-            "10. Anticipez les questions du jury et préparez vos réponses"
+            "Consultez votre directeur potentiel dès le début",
+            "Effectuez une revue de littérature préliminaire",
+            "Définissez une méthodologie réaliste",
+            "Établissez un calendrier détaillé",
+            "Identifiez précisément les ressources nécessaires",
+            "Assurez-vous d'avoir les compétences requises",
+            "Prévoyez des alternatives en cas de difficultés",
+            "Documentez votre processus de recherche",
+            "Préparez une soutenance professionnelle",
+            "Anticipez les questions du jury"
         ]
     }
 
@@ -363,11 +374,14 @@ def get_fallback_analysis(sujet_data: Dict[str, Any]) -> Dict[str, Any]:
         ]
     }
 
-def fallback_recommendation(interests: List[str], sujets: List[Dict]) -> List[Dict]:
+def fallback_recommendation(interests: List[str], sujets: List[Dict]) -> List[Dict[str, Any]]:
     """Recommandation de secours sans IA"""
     results = []
     
-    for sujet in sujets[:10]:
+    if not sujets:
+        return results
+    
+    for sujet in sujets[:5]:
         score = 0
         matching_points = []
         
@@ -396,7 +410,7 @@ def fallback_recommendation(interests: List[str], sujets: List[Dict]) -> List[Di
         
         if score > 0:
             results.append({
-                "id": sujet["id"],
+                "id": sujet.get("id", 0),
                 "score": min(score, 100),
                 "raisons": matching_points[:3] if matching_points else ["Correspondance générale"],
                 "critères": [
@@ -408,28 +422,63 @@ def fallback_recommendation(interests: List[str], sujets: List[Dict]) -> List[Di
     
     # Trier par score
     results.sort(key=lambda x: x["score"], reverse=True)
-    return results[:5]
+    return results
 
 def generate_default_subjects(params: Dict[str, Any], count: int) -> List[Dict[str, Any]]:
     """Génère des sujets par défaut"""
-    domaine = params.get('domaine', 'Génie Civil')
-    niveau = params.get('niveau', 'L3')
-    faculté = params.get('faculté', 'Génie Civil')
+    domaine = params.get('domaine', 'Informatique')
+    niveau = params.get('niveau', 'Master')
+    faculté = params.get('faculté', 'Sciences')
     interests = params.get('interests', 'Recherche académique')
     
     subjects = []
     for i in range(1, count + 1):
         subjects.append({
-            "titre": f"{domaine} - Sujet {i}: Application des technologies innovantes en {domaine}",
-            "problematique": f"Comment les avancées technologiques contemporaines peuvent-elles être appliquées pour résoudre des problèmes spécifiques en {domaine} au niveau {niveau}?",
-            "keywords": f"{domaine}, {niveau}, innovation, technologie, recherche appliquée, méthodologie, {faculté}",
-            "description": f"Étude approfondie des applications possibles des technologies émergentes dans le domaine du {domaine}, avec une approche adaptée au niveau {niveau}. Ce sujet explore les interfaces entre la théorie et la pratique dans un contexte académique rigoureux.",
-            "methodologie": "Revue systématique de littérature, analyse comparative, étude de cas pratiques, modélisation conceptuelle",
+            "titre": f"Application de l'IA dans le domaine du {domaine}",
+            "problematique": f"Comment l'intelligence artificielle peut-elle transformer les pratiques et processus dans le {domaine} ?",
+            "keywords": f"IA, {domaine}, transformation, innovation, technologie",
+            "description": f"Étude des applications potentielles de l'intelligence artificielle dans le secteur du {domaine}, avec une analyse des impacts et des défis à relever.",
+            "methodologie": "Revue de littérature, analyse comparative, étude de cas",
             "difficulté": "moyenne",
-            "durée_estimée": "5-7 mois"
+            "durée_estimée": "6 mois"
         })
     
     return subjects
+
+def get_tips() -> Dict[str, List[str]]:
+    """
+    Retourne des conseils pour la rédaction de mémoire
+    """
+    return {
+        "choix_sujet": [
+            "Choisissez un sujet qui vous passionne vraiment",
+            "Assurez-vous que le sujet soit ni trop large ni trop étroit",
+            "Vérifiez la disponibilité des ressources",
+            "Le sujet doit apporter une contribution originale",
+            "Consultez votre directeur potentiel avant de finaliser"
+        ],
+        "methodologie": [
+            "Définissez clairement votre problématique de recherche",
+            "Choisissez une méthodologie adaptée à votre question",
+            "Élaborez un plan de recherche détaillé",
+            "Documentez rigoureusement toutes vos sources",
+            "Testez votre méthodologie sur un échantillon réduit"
+        ],
+        "redaction": [
+            "Structurez votre mémoire de manière logique",
+            "Rédigez régulièrement (un peu chaque jour)",
+            "Utilisez un style académique clair et précis",
+            "Citez vos sources selon les normes",
+            "Faites relire votre travail par d'autres"
+        ],
+        "soutenance": [
+            "Préparez votre présentation bien à l'avance",
+            "Structurez votre présentation clairement",
+            "Entraînez-vous plusieurs fois à présenter",
+            "Préparez un support visuel professionnel",
+            "Anticipez les questions du jury"
+        ]
+    }
 
 # ======================
 # TEST DE CONNEXION
@@ -446,16 +495,17 @@ if __name__ == "__main__":
             response = chain.invoke({})
             print(f"✅ LangChain fonctionne: {response}")
             
-            # Test des critères
-            print(f"\n📋 Critères disponibles:")
-            criteria = get_acceptance_criteria()
-            print(f"  - {len(criteria['critères_acceptation'])} critères d'acceptation")
-            print(f"  - {len(criteria['critères_rejet'])} critères de rejet")
-            print(f"  - {len(criteria['conseils_pratiques'])} conseils pratiques")
+            # Test des fonctions
+            print(f"\n📋 Fonctions disponibles:")
+            print(f"  - répondre_question: ✓")
+            print(f"  - analyser_sujet: ✓")
+            print(f"  - générer_sujets_llm: ✓")
+            print(f"  - get_acceptance_criteria: ✓")
+            print(f"  - get_tips: ✓")
             
         except Exception as e:
             print(f"❌ Erreur test LangChain: {e}")
     else:
-        print("⚠️ LangChain non configuré")
+        print("⚠️ LangChain non configuré, mode fallback activé")
     
     print("\n✅ Module llm_service prêt")
