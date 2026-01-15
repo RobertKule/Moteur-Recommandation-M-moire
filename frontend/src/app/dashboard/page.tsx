@@ -1,8 +1,9 @@
-// src/app/(dashboard)/page.tsx 
+// src/app/dashboard/page.tsx
 'use client'
 
-import { Target, Star, MessageSquare, TrendingUp, FileText, ArrowRight, User } from 'lucide-react'
+import { Target, Star, MessageSquare, TrendingUp, FileText, ArrowRight, User, Eye, GraduationCap } from 'lucide-react'
 import Link from 'next/link'
+import { AlertCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { api, Sujet, UserPreference } from '@/lib/api'
@@ -18,6 +19,7 @@ export default function DashboardPage() {
   const [preferences, setPreferences] = useState<UserPreference | null>(null)
   const [popularSujets, setPopularSujets] = useState<Sujet[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const quickActions = [
     { title: 'Continuer le chat', href: '/dashboard/chat', icon: MessageSquare },
@@ -33,32 +35,65 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
+      setError(null)
+      
+      console.log('Fetching dashboard data...')
       
       // Récupérer les préférences utilisateur
-      const prefs = await api.getPreferences()
-      setPreferences(prefs)
+      try {
+        console.log('Fetching preferences...')
+        const prefs = await api.getPreferences()
+        console.log('Preferences:', prefs)
+        setPreferences(prefs)
+      } catch (prefError: any) {
+        console.error('Preferences error:', prefError.message)
+        // Continuer sans préférences
+      }
 
       // Récupérer les sujets populaires
-      const sujets = await api.getPopularSujets(5)
-      setPopularSujets(sujets)
-
-      // Mettre à jour les stats
-      setStats(prev => prev.map(stat => {
-        if (stat.label === 'Sujets') {
-          return { ...stat, value: sujets.length.toString() }
-        }
-        if (stat.label === 'Progression' && prefs.interests) {
-          const interestsCount = prefs.interests.split(',').length
-          const progress = Math.min(interestsCount * 20, 85)
-          return { ...stat, value: `${progress}%` }
-        }
-        return stat
-      }))
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error)
+      try {
+        console.log('Fetching popular sujets...')
+        const sujets = await api.getPopularSujets(5)
+        console.log('Popular sujets:', sujets)
+        setPopularSujets(sujets)
+        
+        // Mettre à jour les stats
+        setStats(prev => prev.map(stat => {
+          if (stat.label === 'Sujets') {
+            return { ...stat, value: sujets.length.toString() }
+          }
+          return stat
+        }))
+      } catch (sujetError: any) {
+        console.error('Sujets error:', sujetError.message)
+      }
+      
+    } catch (error: any) {
+      console.error('General error fetching dashboard data:', error)
+      setError(error.message || 'Erreur lors du chargement des données')
     } finally {
       setLoading(false)
     }
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] p-4">
+        <div className="text-red-600 dark:text-red-400 mb-4">
+          <AlertCircle className="w-12 h-12 mx-auto" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          Erreur de chargement
+        </h3>
+        <p className="text-gray-600 dark:text-gray-400 text-center mb-4">{error}</p>
+        <button
+          onClick={fetchDashboardData}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Réessayer
+        </button>
+      </div>
+    )
   }
 
   if (loading) {
@@ -83,6 +118,8 @@ export default function DashboardPage() {
           Bienvenue sur votre espace de recherche de sujet
         </p>
       </div>
+
+
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -218,7 +255,7 @@ export default function DashboardPage() {
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Votre progression</h2>
           <div className="space-y-4">
             {[
-              { label: 'Profil complété', progress: 100 },
+              { label: 'Profil complété', progress: preferences ? 100 : 50 },
               { label: 'Critères définis', progress: preferences?.interests ? 85 : 30 },
               { label: 'Sujets explorés', progress: popularSujets.length > 0 ? 60 : 20 },
               { label: 'Analyse approfondie', progress: 30 },

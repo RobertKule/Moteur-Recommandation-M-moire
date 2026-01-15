@@ -1,7 +1,7 @@
 // src/app/login/page.tsx - MODIFIÉ
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -13,14 +13,15 @@ import {
   EyeOff, 
   GraduationCap, 
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  Loader2
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import ThemeToggle from '@/components/ui/theme-toggle'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { login, isLoading } = useAuth()
+  const { user, isLoading, login } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
@@ -28,6 +29,23 @@ export default function LoginPage() {
     password: '',
     rememberMe: false
   })
+  const [isRedirecting, setIsRedirecting] = useState(false)
+
+  
+
+  // Effet pour charger l'email mémorisé
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const rememberedEmail = localStorage.getItem('remembered_email')
+      if (rememberedEmail) {
+        setFormData(prev => ({
+          ...prev,
+          email: rememberedEmail,
+          rememberMe: true
+        }))
+      }
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,14 +58,43 @@ export default function LoginPage() {
 
     try {
       await login(formData.email, formData.password)
-      
+router.replace('/dashboard')
+
       if (formData.rememberMe) {
-        // Vous pourriez stocker l'email en localStorage pour pré-remplir
         localStorage.setItem('remembered_email', formData.email)
+      } else {
+        localStorage.removeItem('remembered_email')
       }
+      
+   
+      
     } catch (err: any) {
       setError(err.message || 'Échec de la connexion. Veuillez vérifier vos identifiants.')
     }
+  }
+
+  // Si en cours de chargement initial
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">Chargement...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Si redirection en cours
+  if (isRedirecting) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-green-600 mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">Redirection vers le tableau de bord...</p>
+        </div>
+      </div>
+    )
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +113,7 @@ export default function LoginPage() {
       transition: { duration: 0.5, ease: "easeOut" }
     }
   }
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">

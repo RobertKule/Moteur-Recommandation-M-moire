@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "css": "npx tailwindcss -i .\\src\\app\\globals.css -o .\\src\\app\\output.css --watch"
+    "css": "npx tailwindcss -i .\\src\\app\\tailwind.css -o .\\src\\app\\globals.css --watch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
