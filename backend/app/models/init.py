@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
 
+# Tous vos modèles dans un seul fichier __init__.py
 class User(Base):
     __tablename__ = "users"
     
@@ -16,7 +17,20 @@ class User(Base):
     
     # Relation avec UserPreference
     preferences = relationship("UserPreference", back_populates="user", uselist=False, cascade="all, delete-orphan")
+
+class UserPreference(Base):
+    __tablename__ = "user_preferences"
     
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
+    interests = Column(Text, nullable=True)
+    faculty = Column(String(255), nullable=True)
+    level = Column(String(100), nullable=True)  # ex: "Master 2", "Licence 3"
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relation
+    user = relationship("User", back_populates="preferences")
 
 class Sujet(Base):
     __tablename__ = "sujets"
@@ -56,23 +70,3 @@ class Feedback(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     sujet = relationship("Sujet", back_populates="feedbacks")
-    
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
-from app.database import Base
-
-class UserPreference(Base):
-    __tablename__ = "user_preferences"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
-    interests = Column(Text, nullable=True)
-    faculty = Column(String(255), nullable=True)
-    level = Column(String(100), nullable=True)  # ex: "Master 2", "Licence 3"
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
-    # Relation
-    user = relationship("User", back_populates="preferences")
-
