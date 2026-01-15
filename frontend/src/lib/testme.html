@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Test d'authentification Frontend</h2>
+  <div>
+    <input id="email" placeholder="Email" value="etudiant@thesis.com">
+    <input id="password" placeholder="Mot de passe" value="etudiant123" type="password">
+    <button onclick="testLogin()">Tester login</button>
+  </div>
+  <div id="result"></div>
+  
+  <script>
+    async function testLogin() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = 'Envoi de la requête...';
+      
+      try {
+        // Test direct sans utiliser votre api.ts
+        const response = await fetch('http://localhost:8000/api/v1/auth/login-json', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+        }
+        
+        const data = await response.json();
+        resultDiv.innerHTML = `
+          <h3>✅ Succès !</h3>
+          <p>Token reçu: ${data.access_token.substring(0, 50)}...</p>
+          <button onclick="testMe('${data.access_token}')">Tester /me endpoint</button>
+        `;
+        
+        // Stocker dans localStorage pour tester
+        localStorage.setItem('access_token', data.access_token);
+        
+      } catch (error) {
+        resultDiv.innerHTML = `<h3>❌ Erreur</h3><p>${error.message}</p>`;
+      }
+    }
+    
+    async function testMe(token) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML += '<br>Test /me...';
+      
+      try {
+        const response = await fetch('http://localhost:8000/api/v1/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+        }
+        
+        const userData = await response.json();
+        resultDiv.innerHTML += `<br>✅ User data: ${JSON.stringify(userData)}`;
+      } catch (error) {
+        resultDiv.innerHTML += `<br>❌ Erreur /me: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
