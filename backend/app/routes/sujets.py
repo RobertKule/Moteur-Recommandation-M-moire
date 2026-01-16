@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import json
-
+import datetime
 from app.database import get_db
 from app import crud, schemas
 from app.dependencies import get_current_user, require_admin
@@ -152,7 +152,32 @@ async def create_sujet(
     Créer un nouveau sujet (admin only)
     """
     return crud.create_sujet(db, sujet)
-
+@router.get("/", response_model=List[schemas.Sujet])
+async def list_sujets(
+    q: str = Query(None, description="Terme de recherche"),
+    domaine: str = Query(None, description="Domaine"),
+    faculté: str = Query(None, description="Faculté"),
+    niveau: str = Query(None, description="Niveau"),
+    difficulté: str = Query(None, description="Difficulté"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    """
+    Lister tous les sujets avec filtres
+    """
+    sujets = crud.get_sujets(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=q,
+        domaine=domaine,
+        faculté=faculté,
+        niveau=niveau,
+        difficulté=difficulté
+    )
+    
+    return sujets
 @router.post("/generate")
 async def generate_sujets(
     interests: List[str] = Query(..., description="Intérêts"),
@@ -186,15 +211,44 @@ async def submit_feedback(
     return crud.create_feedback(db, feedback, current_user.id)
 
 @router.get("/stats/popular")
-async def get_popular_sujets(
-    limit: int = Query(10, ge=1, le=50),
-    db: Session = Depends(get_db)
+def get_popular_sujets(
+    db: Session = Depends(get_db),
+    limit: int = Query(10, ge=1, le=100)
 ):
-    """
-    Sujets les plus populaires
-    """
-    sujets = crud.get_sujets(db, limit=limit)
-    return sorted(sujets, key=lambda x: x.vue_count, reverse=True)[:limit]
+    """Récupère les sujets les plus populaires"""
+    try:
+        sujets = crud.get_popular_sujets(db, limit=limit)
+        
+        # Convertir en schéma Sujet
+        result = []
+        for sujet in sujets:
+            sujet_dict = {
+                "id": sujet.id,
+                "titre": sujet.titre,
+                "description": sujet.description,
+                "domaine": sujet.domaine,
+                "faculté": sujet.faculté,
+                "niveau": sujet.niveau,
+                "difficulté": sujet.difficulté,
+                "vue_count": sujet.vue_count,
+                "like_count": sujet.like_count,
+                "created_at": sujet.created_at.isoformat() if sujet.created_at else None,
+                "problématique": sujet.problématique or "",
+                "méthodologie": sujet.méthodologie or "",
+                "keywords": sujet.keywords or ""
+            }
+            result.append(sujet_dict)
+        
+        return result
+        
+    except Exception as e:
+        print(f"Erreur dans get_popular_sujets: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erreur serveur: {str(e)}"
+        )
 
 @router.get("/stats/keywords")
 async def get_popular_keywords(

@@ -62,17 +62,36 @@ def login(
     
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.post("/login-json", response_model=Token)
+
+@router.post("/login-json", response_model=schemas.Token)
 def login_json(
-    login_data: UserLogin,
+    login_data: schemas.UserLogin,
     db: Session = Depends(get_db)
 ):
     """
     Connexion avec JSON (alternative).
     """
+    print(f"Login attempt for email: {login_data.email}")  # Debug
+    
     # Vérifier l'utilisateur
     user = crud.get_user_by_email(db, email=login_data.email)
-    if not user or not verify_password(login_data.password, user.hashed_password):
+    print(f"User found: {user is not None}")  # Debug
+    
+    if not user:
+        print("User not found")  # Debug
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Vérifier le mot de passe
+    from app.auth import verify_password
+    password_valid = verify_password(login_data.password, user.hashed_password)
+    print(f"Password valid: {password_valid}")  # Debug
+    
+    if not password_valid:
+        print("Password invalid")  # Debug
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -93,6 +112,7 @@ def login_json(
         expires_delta=access_token_expires
     )
     
+    print(f"Token created for user: {user.email}")  # Debug
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/forgot-password")

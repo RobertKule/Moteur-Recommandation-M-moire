@@ -22,6 +22,12 @@ def create_users():
                 "role": "admin"
             },
             {
+                "email": "rkule@thesis.com",
+                "full_name": "Robert KULE",
+                "password": "123456",
+                "role": "admin"
+            },
+            {
                 "email": "enseignant@thesis.com",
                 "full_name": "Professeur Jean Dupont",
                 "password": "enseignant123",

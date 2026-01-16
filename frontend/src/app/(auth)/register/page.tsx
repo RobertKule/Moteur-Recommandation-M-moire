@@ -62,9 +62,10 @@ export default function RegisterPage() {
         password: formData.password,
         role: 'etudiant'  // Par défaut, tous les nouveaux sont étudiants
       })
-
+      router.replace('/dashboard')
       // La redirection se fait automatiquement dans le contexte
       // après l'inscription réussie
+      
     } catch (err: any) {
       setError(err.message || 'Une erreur est survenue lors de l\'inscription')
     }

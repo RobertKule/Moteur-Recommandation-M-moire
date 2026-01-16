@@ -58,7 +58,7 @@ export default function LoginPage() {
 
     try {
       await login(formData.email, formData.password)
-router.replace('/dashboard')
+      // router.replace('/dashboard')
 
       if (formData.rememberMe) {
         localStorage.setItem('remembered_email', formData.email)

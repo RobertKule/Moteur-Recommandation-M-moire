@@ -2,9 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import {
+import { 
   Search,
   Filter,
   Target,
@@ -16,6 +14,7 @@ import {
   X,
   ChevronDown
 } from 'lucide-react'
+import Link from 'next/link'
 import { api, Sujet } from '@/lib/api'
 import { toast } from 'sonner'
 
@@ -56,13 +55,13 @@ export default function ExploreSujetsPage() {
         sujet_id: sujetId,
         intéressé: true
       })
-
-      setInterestedSujets(prev =>
-        prev.includes(sujetId)
+      
+      setInterestedSujets(prev => 
+        prev.includes(sujetId) 
           ? prev.filter(id => id !== sujetId)
           : [...prev, sujetId]
       )
-
+      
       toast.success('Intérêt enregistré')
     } catch (error: any) {
       toast.error(error.message || 'Erreur')
@@ -88,15 +87,26 @@ export default function ExploreSujetsPage() {
     return true
   })
 
-  // Récupérer les valeurs uniques pour les filtres
+  // Récupérer les valeurs uniques
   const domaines = [...new Set(sujets.map(s => s.domaine))]
   const niveaux = [...new Set(sujets.map(s => s.niveau))]
   const difficultés = [...new Set(sujets.map(s => s.difficulté))]
   const facultés = [...new Set(sujets.map(s => s.faculté))]
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Chargement des sujets...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
-      {/* En-tête avec recherche */}
+      {/* En-tête */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -129,13 +139,8 @@ export default function ExploreSujetsPage() {
 
         {/* Filtres */}
         {showFilters && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mb-6"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Domaine
@@ -197,18 +202,15 @@ export default function ExploreSujetsPage() {
                 </select>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
 
       {/* Liste des sujets */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {filteredSujets.map((sujet, index) => (
-          <motion.div
+        {filteredSujets.map((sujet) => (
+          <div
             key={sujet.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
             className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
           >
             <div className="flex items-start justify-between mb-4">
@@ -223,10 +225,11 @@ export default function ExploreSujetsPage() {
                   <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-sm rounded-full">
                     {sujet.niveau}
                   </span>
-                  <span className={`px-3 py-1 text-sm rounded-full ${sujet.difficulté === 'facile' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
-                      sujet.difficulté === 'moyenne' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
-                        'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-                    }`}>
+                  <span className={`px-3 py-1 text-sm rounded-full ${
+                    sujet.difficulté === 'facile' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' :
+                    sujet.difficulté === 'moyenne' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
+                    'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                  }`}>
                     {sujet.difficulté}
                   </span>
                 </div>
@@ -252,7 +255,7 @@ export default function ExploreSujetsPage() {
                   {sujet.problématique}
                 </p>
               </div>
-
+              
               {sujet.keywords && (
                 <div>
                   <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -280,15 +283,17 @@ export default function ExploreSujetsPage() {
                   <span>{sujet.like_count} likes</span>
                 </div>
               </div>
-
-              <Link
-                href={`/dashboard/sujets/${sujet.id}`}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm transition-colors"
-              >
-                Voir les détails
-              </Link>
+              
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/dashboard/sujets/${sujet.id}`}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                >
+                  Voir les détails
+                </Link>
+              </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 

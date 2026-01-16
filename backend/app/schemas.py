@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field, EmailStr
-from typing import Optional, List
+from pydantic import BaseModel, Field, EmailStr, validator
+from typing import Optional, List, Dict, Any, Union
 from datetime import datetime
 from enum import Enum
 
@@ -30,6 +30,12 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=6, description="Mot de passe")
+    
+    @validator('password')
+    def password_strength(cls, v):
+        if len(v) < 6:
+            raise ValueError('Le mot de passe doit contenir au moins 6 caractères')
+        return v
 
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
@@ -165,6 +171,10 @@ class UserProfileBase(BaseModel):
     field: Optional[str] = None
     level: Optional[str] = None
     interests: Optional[str] = None
+    phone: Optional[str] = None
+    website: Optional[str] = None
+    linkedin: Optional[str] = None
+    github: Optional[str] = None
 
 class UserProfileCreate(UserProfileBase):
     user_id: int
@@ -176,6 +186,35 @@ class UserProfile(UserProfileBase):
     user_id: int
     created_at: datetime
     updated_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class UserSkillBase(BaseModel):
+    name: str
+    level: int = Field(..., ge=1, le=10)
+    category: Optional[str] = None
+
+class UserSkillCreate(UserSkillBase):
+    pass
+
+class UserSkillUpdate(UserSkillBase):
+    pass
+
+class UserSkill(UserSkillBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class UserStats(BaseModel):
+    profile_completion: int
+    explored_subjects: int
+    recommendations_count: int
+    active_days: int
+    last_active: datetime
 
 # ========== AI SCHEMAS ==========
 class AIRequest(BaseModel):
@@ -187,6 +226,9 @@ class AIResponse(BaseModel):
     réponse: str
     suggestions: List[str] = []
 
+
+    class Config:
+        from_attributes = True
 class AIAnalysisRequest(BaseModel):
     titre: str
     description: str
@@ -204,6 +246,19 @@ class AIAnalysisResponse(BaseModel):
     suggestions: List[str]
     recommandations: List[str]
 
+class AnalyzeSubjectRequest(BaseModel):
+    titre: str
+    description: str
+    domaine: Optional[str] = None
+    niveau: Optional[str] = None
+    faculté: Optional[str] = None
+    problématique: Optional[str] = None
+    keywords: Optional[str] = None
+    context: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
+
 class GenerateSubjectsRequest(BaseModel):
     interests: List[str]
     domaine: Optional[str] = None
@@ -219,6 +274,57 @@ class GeneratedSubject(BaseModel):
     methodologie: str
     difficulté: str
     durée_estimée: str
+
+class GeneratedSubjectItem(BaseModel):
+    """Modèle pour les sujets générés par IA"""
+    titre: str
+    description: str
+    problématique: str
+    keywords: str
+    domaine: str
+    niveau: str
+    faculté: str
+    difficulté: str
+    durée_estimée: str
+    methodologie: Optional[str] = None
+    original: Optional[bool] = True
+    generated_at: Optional[str] = None
+    session_id: Optional[str] = None
+    index: Optional[int] = None
+
+class AIGeneratedSubjects(BaseModel):
+    session_id: str
+    subjects: List[GeneratedSubjectItem]  # Correction ici: List[dict[str, any]] -> List[GeneratedSubjectItem]
+    count: int
+    message: str
+
+class SaveChosenSubjectRequest(BaseModel):
+    titre: str
+    description: str
+    keywords: str
+    domaine: str
+    niveau: str
+    faculté: str
+    problématique: str
+    méthodologie: str
+    difficulté: str
+    durée_estimée: str
+    interests: Optional[List[str]] = None
+
+class ActionButton(BaseModel):
+    text: str
+    action: str
+    icon: Optional[str] = None
+
+class AIChatRequest(BaseModel):
+    message: str
+    context: Optional[str] = None
+
+class AIChatResponse(BaseModel):
+    message: str
+    suggestions: List[str] = []
+    actions: List[ActionButton] = []  # Correction ici: List[dict[str, str]] -> List[ActionButton]
+    timestamp: str
 
 class AcceptanceCriteria(BaseModel):
     critères_acceptation: List[str]
@@ -246,3 +352,67 @@ class DomainStats(BaseModel):
     domaine: str
     count: int
     avg_views: float
+
+# ========== DASHBOARD SCHEMAS ==========
+class DashboardStats(BaseModel):
+    total_sujets: int
+    user_sujets: int
+    saved_sujets: int
+    recommendations_count: int
+    last_activity: Optional[datetime] = None
+    popular_keywords: List[PopularKeyword] = []
+    domain_stats: List[DomainStats] = []
+
+# ========== SETTINGS SCHEMAS ==========
+class SettingsBase(BaseModel):
+    notifications_enabled: bool = True
+    email_notifications: bool = True
+    theme: str = "light"
+    language: str = "fr"
+
+class SettingsCreate(SettingsBase):
+    user_id: int
+
+class SettingsUpdate(SettingsBase):
+    pass
+
+class Settings(SettingsBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+# ========== HISTORY & CONVERSATION SCHEMAS ==========
+class UserHistoryBase(BaseModel):
+    action: str
+    details: Optional[str] = None
+    sujet_id: Optional[int] = None
+
+class UserHistoryCreate(UserHistoryBase):
+    user_id: int
+
+class UserHistory(UserHistoryBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+class ConversationMessageBase(BaseModel):
+    role: str
+    content: str
+
+class ConversationMessageCreate(ConversationMessageBase):
+    user_id: int
+
+class ConversationMessage(ConversationMessageBase):
+    id: int
+    user_id: int
+    timestamp: datetime
+    
+    class Config:
+        from_attributes = True

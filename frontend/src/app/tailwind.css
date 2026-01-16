@@ -26,7 +26,52 @@
     transform: translateY(0);
   }
 }
+/* src/app/globals.css - Ajoutez ces styles */
 
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Sidebar animations */
+.sidebar-enter {
+  transform: translateX(-100%);
+}
+
+.sidebar-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms ease-in-out;
+}
+
+.sidebar-exit {
+  transform: translateX(0);
+}
+
+.sidebar-exit-active {
+  transform: translateX(-100%);
+  transition: transform 300ms ease-in-out;
+}
+
+/* Tooltip pour sidebar réduit */
+[title] {
+  position: relative;
+}
+
+[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  padding: 4px 8px;
+  background: #1f2937;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+}
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -96,3 +141,88 @@
 .dark :focus-visible {
   outline-color: #3B82F6;
 }
+@keyframes border-spin {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
+        .animate-border-spin {
+          background-size: 200% 200%;
+          animation: border-spin 3s linear infinite;
+        }
+        
+        /* Animation de rebond plus lent */
+        @keyframes bounce-slow {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+        
+        .animate-bounce-slow {
+          animation: bounce-slow 2s infinite;
+        }
+        
+        /* Animation de fade-in vers le haut */
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fade-in-up {
+          animation: fade-in-up 0.5s ease-out;
+        }
+        
+        /* Ping plus lent */
+        @keyframes ping-slow {
+          0% {
+            transform: scale(1);
+            opacity: 0.2;
+          }
+          50% {
+            transform: scale(1.2);
+            opacity: 0;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.2;
+          }
+        }
+        
+        .animate-ping-slow {
+          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        
+        /* Pour rendre l'animation plus fluide */
+        .animate-border-spin {
+          will-change: background-position;
+        }
+        
+        /* Animation pour les points de l'indicateur de frappe */
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+        
+        .animate-bounce {
+          animation: bounce 0.6s infinite;
+        }

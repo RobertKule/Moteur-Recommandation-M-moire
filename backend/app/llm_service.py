@@ -5,11 +5,12 @@ import re
 from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
 
+from datetime import datetime
 load_dotenv()
 
 # Configuration
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-pro")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemma-3-1b-it")
 
 # ======================
 # CONFIGURATION LANGCHAIN
@@ -229,10 +230,7 @@ def répondre_question(question: str, contexte: str = None) -> str:
         print(f"⚠️ Erreur réponse LangChain: {e}")
         return f"Je ne peux pas répondre pour le moment. Veuillez réessayer plus tard."
 
-def générer_sujets_llm(
-    params: Dict[str, Any],
-    count: int = 3
-) -> List[Dict[str, Any]]:
+def générer_sujets_llm(params: Dict[str, Any], count: int) -> List[Dict[str, Any]]:
     """Génère des sujets avec LangChain"""
     
     if not llm:
@@ -261,7 +259,7 @@ def générer_sujets_llm(
     [
       {{
         "titre": "Titre du sujet",
-        "problematique": "Problématique de recherche",
+        "problématique": "Problématique de recherche",  // CHANGÉ: problématique au lieu de problematique
         "keywords": "mot1, mot2, mot3, mot4, mot5",
         "description": "Description du sujet",
         "methodologie": "Méthodologie suggérée",
@@ -291,6 +289,15 @@ def générer_sujets_llm(
             if json_match:
                 json_str = json_match.group()
                 sujets = json.loads(json_str)
+                
+                # Ajouter les champs manquants pour correspondre au schéma
+                for i, sujet in enumerate(sujets):
+                    sujet["domaine"] = params.get('domaine', 'Général')
+                    sujet["niveau"] = params.get('niveau', 'L3')
+                    sujet["faculté"] = params.get('faculté', 'Sciences')
+                    sujet["original"] = True
+                    sujet["generated_at"] = datetime.utcnow().isoformat()
+                    
                 return sujets[:count]
         except (json.JSONDecodeError, AttributeError):
             pass
@@ -300,6 +307,7 @@ def générer_sujets_llm(
     except Exception as e:
         print(f"⚠️ Erreur génération LangChain: {e}")
         return generate_default_subjects(params, count)
+
 
 def get_acceptance_criteria() -> Dict[str, Any]:
     """
@@ -435,12 +443,17 @@ def generate_default_subjects(params: Dict[str, Any], count: int) -> List[Dict[s
     for i in range(1, count + 1):
         subjects.append({
             "titre": f"Application de l'IA dans le domaine du {domaine}",
-            "problematique": f"Comment l'intelligence artificielle peut-elle transformer les pratiques et processus dans le {domaine} ?",
+            "problématique": f"Comment l'intelligence artificielle peut-elle transformer les pratiques et processus dans le {domaine} ?",  # CHANGÉ
             "keywords": f"IA, {domaine}, transformation, innovation, technologie",
             "description": f"Étude des applications potentielles de l'intelligence artificielle dans le secteur du {domaine}, avec une analyse des impacts et des défis à relever.",
             "methodologie": "Revue de littérature, analyse comparative, étude de cas",
             "difficulté": "moyenne",
-            "durée_estimée": "6 mois"
+            "durée_estimée": "6 mois",
+            "domaine": domaine,  # AJOUTÉ
+            "niveau": niveau,    # AJOUTÉ
+            "faculté": faculté,  # AJOUTÉ
+            "original": True,    # AJOUTÉ
+            "generated_at": datetime.utcnow().isoformat()  # AJOUTÉ
         })
     
     return subjects

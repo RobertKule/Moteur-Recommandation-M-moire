@@ -213,7 +213,8 @@ def update_my_preferences(
     return preferences
 
 # Routes pour le profil utilisateur
-@router.get("/{user_id}/profile")
+
+@router.get("/{user_id}/profile", response_model=schemas.UserProfile)
 def get_user_profile(
     user_id: int,
     db: Session = Depends(get_db),
@@ -229,23 +230,13 @@ def get_user_profile(
             detail="Cannot access other user's profile"
         )
     
-    # TEMPORAIRE: Retourner des données mock
-    return {
-        "user_id": user_id,
-        "bio": "Étudiant passionné par la technologie et l'innovation",
-        "location": "Paris, France",
-        "university": "Université Paris-Saclay",
-        "field": "Informatique",
-        "level": "Master 2",
-        "interests": "IA, Machine Learning, Web Development, Data Science",
-        "created_at": datetime.now().isoformat(),
-        "updated_at": datetime.now().isoformat()
-    }
+    profile = crud.get_or_create_profile(db, user_id)
+    return profile
 
-@router.put("/{user_id}/profile")
+@router.put("/{user_id}/profile", response_model=schemas.UserProfile)
 def update_user_profile(
     user_id: int,
-    profile_update: dict,
+    profile_update: schemas.UserProfileUpdate,
     db: Session = Depends(get_db),
     current_user: schemas.User = Depends(get_current_user)
 ):
@@ -259,15 +250,10 @@ def update_user_profile(
             detail="Cannot update other user's profile"
         )
     
-    # TEMPORAIRE: Simuler la mise à jour
-    return {
-        "user_id": user_id,
-        **profile_update,
-        "created_at": datetime.now().isoformat(),
-        "updated_at": datetime.now().isoformat()
-    }
+    profile = crud.update_user_profile(db, user_id, profile_update.dict(exclude_unset=True))
+    return profile
 
-@router.get("/{user_id}/skills")
+@router.get("/{user_id}/skills", response_model=List[schemas.UserSkill])
 def get_user_skills(
     user_id: int,
     db: Session = Depends(get_db),
@@ -283,35 +269,46 @@ def get_user_skills(
             detail="Cannot access other user's skills"
         )
     
-    # TEMPORAIRE: Données mock
-    return [
-        {
-            "id": 1,
-            "user_id": user_id,
-            "name": "Python",
-            "level": 8,
-            "category": "Programming",
-            "created_at": datetime.now().isoformat()
-        },
-        {
-            "id": 2,
-            "user_id": user_id,
-            "name": "FastAPI",
-            "level": 7,
-            "category": "Web Development",
-            "created_at": datetime.now().isoformat()
-        },
-        {
-            "id": 3,
-            "user_id": user_id,
-            "name": "Machine Learning",
-            "level": 6,
-            "category": "AI",
-            "created_at": datetime.now().isoformat()
-        }
-    ]
+    skills = crud.get_user_skills(db, user_id)
+    return skills
 
-@router.get("/{user_id}/stats")
+@router.post("/{user_id}/skills", response_model=schemas.UserSkill)
+def create_user_skill_endpoint(
+    user_id: int,
+    skill: schemas.UserSkillCreate,
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Créer une compétence pour l'utilisateur
+    """
+    if user_id != current_user.id and current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cannot create skill for other user"
+        )
+    
+    return crud.create_user_skill(db, user_id, skill.dict())
+
+@router.put("/{user_id}/skills", response_model=List[schemas.UserSkill])
+def update_user_skills_endpoint(
+    user_id: int,
+    skills: List[schemas.UserSkillCreate],
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user)
+):
+    """
+    Mettre à jour toutes les compétences de l'utilisateur
+    """
+    if user_id != current_user.id and current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cannot update skills for other user"
+        )
+    
+    return crud.update_user_skills(db, user_id, [skill.dict() for skill in skills])
+
+@router.get("/{user_id}/stats", response_model=schemas.UserStats)
 def get_user_stats(
     user_id: int,
     db: Session = Depends(get_db),
@@ -327,14 +324,9 @@ def get_user_stats(
             detail="Cannot access other user's stats"
         )
     
-    # TEMPORAIRE: Données mock
-    return {
-        "profile_completion": 75,
-        "explored_subjects": 15,
-        "recommendations_count": 8,
-        "active_days": 24,
-        "last_active": datetime.now().isoformat()
-    }
+    stats = crud.get_user_stats(db, user_id)
+    return stats
+
 
 # Routes admin
 @router.get("/", response_model=List[schemas.User])

@@ -152,8 +152,8 @@ export function SidebarSuggestions() {
             <p className="font-medium text-green-800">Validez avec un expert</p>
             <p className="text-xs">Discutez toujours de votre sujet avec un enseignant</p>
           </div>
-          <div className="p-2 bg-purple-50 rounded">
-            <p className="font-medium text-purple-800">Planifiez votre temps</p>
+          <div className="p-2 bg-blue-50 rounded">
+            <p className="font-medium text-blue-800">Planifiez votre temps</p>
             <p className="text-xs">Prévoyez 20% de temps supplémentaire pour les imprévus</p>
           </div>
         </CardContent>
